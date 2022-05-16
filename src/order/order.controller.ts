@@ -2,14 +2,17 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { Order } from './entities/order.entity';
 import { CreateOrderDetailDto } from './dto/create-orderDetail.dto';
 import { GetUser } from 'src/auth/get-user.decorator';
 import { User } from 'src/user/entity/user..entity';
 import { AuthGuard } from '@nestjs/passport';
+import { RoleGuard } from 'src/custom/role.guard';
+import { Roles } from 'src/custom/role.decorato';
+import { RoleStatus } from 'src/user/status/role-status.enum';
+import { GetTasksFilterDto } from './dto/get-order-filter.dto';
 
 @Controller('order')
-@UseGuards(AuthGuard())
+@UseGuards(AuthGuard(), RoleGuard)
 export class OrderController {
   constructor(private readonly orderService: OrderService) { }
 
@@ -24,12 +27,13 @@ export class OrderController {
 
   @Get()
   findAll(
-    @GetUser() user: User,
+    @GetUser() user: User, filterDto: GetTasksFilterDto
   ) {
-    return this.orderService.findAll(user);
+    return this.orderService.findAll(user, filterDto);
   }
 
   @Get(':id')
+  @Roles(RoleStatus.ADMIN, RoleStatus.SUPPERADMIN)
   findOne(
     @Param('id') id: string,
     @GetUser() user: User,
@@ -38,6 +42,7 @@ export class OrderController {
   }
 
   @Patch(':id')
+  @Roles(RoleStatus.ADMIN, RoleStatus.SUPPERADMIN)
   update(
     @Param('id') id: string,
     @Body() updateOrderDto: UpdateOrderDto,
@@ -47,6 +52,7 @@ export class OrderController {
   }
 
   @Delete(':id')
+  @Roles(RoleStatus.ADMIN, RoleStatus.SUPPERADMIN)
   remove(
     @Param('id') id: string,
     @GetUser() user: User,

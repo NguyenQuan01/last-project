@@ -5,16 +5,16 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrderRepository } from './order.repository';
 import { OrderDetailRepository } from './orderDetail.repository';
-import { VoucherRepository } from 'src/voucher/voucher.repositoty';
-import { ItemflashsaleRepository } from 'src/itemflashsale/itemflashsale.repository';
 import { ItemRepository } from 'src/items/item.repository';
+import { AddressRepository } from 'src/address/address.repository';
+import { FlashsaleRepository } from 'src/flashsale/flashsale.repository';
 
 @Module({
   imports: [
     PassportModule.register({ defaultStrategy: 'jwt' }),
-    TypeOrmModule.forFeature([OrderRepository, OrderDetailRepository, VoucherRepository, ItemflashsaleRepository, ItemRepository]),
+    TypeOrmModule.forFeature([OrderRepository, OrderDetailRepository, ItemRepository, AddressRepository, FlashsaleRepository]),
   ],
   controllers: [OrderController],
   providers: [OrderService]
 })
-export class OrderModule {}
+export class OrderModule { }

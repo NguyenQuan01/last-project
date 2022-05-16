@@ -34,8 +34,11 @@ export class User {
     @Column({ nullable: true })
     avatar: string
 
-    @Column()
-    verify: boolean
+    @Column({ default: false })
+    verify: boolean;
+
+    @Column({ nullable: true })
+    verifyCode: string;
 
     @OneToMany(_type => Address, address => address.user, {eager: true})
     adderss: Address[]

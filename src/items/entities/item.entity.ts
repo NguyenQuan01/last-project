@@ -19,7 +19,7 @@ export class Item {
     @Column()
     price: number
 
-    @Column()
+    @Column({ type: 'float' })
     weight: number
 
     @Column()
@@ -50,6 +50,6 @@ export class Item {
     @OneToMany((_type) => Itemflashsale, (itemFlashsale) => itemFlashsale.item, { eager: false })
     itemFlashsale: Itemflashsale[]
 
-    @ManyToOne((_type) => OrderDetail, (orderDetail) => orderDetail.item, { eager: false })
-    orderDetail: OrderDetail
+    @OneToMany((_type) => OrderDetail, (orderDetail) => orderDetail.item, { eager: false })
+    orderDetail: OrderDetail[]
 }

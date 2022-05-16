@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { FlashsaleRepository } from 'src/flashsale/flashsale.repository';
 import { ItemRepository } from 'src/items/item.repository';
 import { ItemsService } from 'src/items/items.service';
+import { createQueryBuilder } from 'typeorm';
 import { CreateItemflashsaleDto } from './dto/create-itemflashsale.dto';
 import { GetItemFlashsaleFilterDto } from './dto/get-itemflashsale-filter.dto';
 import { UpdateItemflashsaleDto } from './dto/update-itemflashsale.dto';
@@ -15,10 +16,10 @@ export class ItemflashsaleService {
     private itemRepository: ItemRepository,
     private flashsaleRepository: FlashsaleRepository,
   ) { }
-  async create(createItemflashsaleDto: CreateItemflashsaleDto, id: string): Promise<Itemflashsale> {
-    const { quantity, itemId } = createItemflashsaleDto
-    let item = await this.itemRepository.findOne(itemId)
-    let flashsale = await this.flashsaleRepository.findOne(id)
+  async create(createItemflashsaleDto: CreateItemflashsaleDto): Promise<Itemflashsale> {
+    const { quantity, itemId, flashsaleId } = createItemflashsaleDto
+    const item = await this.itemRepository.findOne(itemId)
+    const flashsale = await this.flashsaleRepository.findOne(flashsaleId)
     if (item.quantity < quantity) {
       throw new BadRequestException('Quantity of flashsale must be less or equal quantity of item')
     } else {
@@ -43,13 +44,17 @@ export class ItemflashsaleService {
   }
 
   async update(id: string, updateItemflashsaleDto: UpdateItemflashsaleDto): Promise<Itemflashsale> {
-    const { discount, quantity } = updateItemflashsaleDto
+    const { discount, quantity, issale } = updateItemflashsaleDto
     const itemflashsale = await this.itemflashsaleRepository.findOne(id)
     if (discount) {
       itemflashsale.discount = discount;
     }
     if (quantity) {
       itemflashsale.quantity = quantity;
+    }
+
+    if (issale) {
+      itemflashsale.issale = issale;
     }
 
     const result = await this.itemflashsaleRepository.save(itemflashsale)

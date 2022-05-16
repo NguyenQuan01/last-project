@@ -18,6 +18,7 @@ export class CategoryService {
   ) { }
 
   async create(createCategoryDto: CreateCategoryDto, file: Array<Express.Multer.File>): Promise<void> {
+    
     const category = this.categoryRepository.create({
       ...createCategoryDto,
       categoryStatus: CategoryStatus.INACTIVE
@@ -106,8 +107,13 @@ export class CategoryService {
 
   async remove(id: string) {
     const deleted = await this.categoryRepository.delete(id);
-    if (!deleted.affected) {
+    const deleteImage = await this.categoryBannerRepository.delete({id})
+    if (!deleted.affected ) {
       throw new HttpException('category not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (!deleteImage.affected) {
+      throw new HttpException('categorybanner not found', HttpStatus.NOT_FOUND);
     }
   }
 }

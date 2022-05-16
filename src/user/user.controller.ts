@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { GetUserFilterDto } from './dto/get-user-filter.dto';
 import { User } from './entity/user..entity';
 import { UserService } from './user.service';
@@ -9,15 +9,18 @@ import { diskStorage } from 'multer';
 import { editFileName } from 'src/user/update-filename.sto';
 import { imageFileFilter } from 'src/user/dto/file-filter.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { VerifyUserDto } from 'src/auth/dto/verify-user.dto';
+import { RoleGuard } from 'src/custom/role.guard';
 
 @Controller('user')
-@UseGuards(AuthGuard())
+
 export class UserController {
     constructor(
         private userService: UserService
     ) { }
 
     @Get()
+    @UseGuards(AuthGuard())
     getTasks(
         @Query() filterDto: GetUserFilterDto,
     ): Promise<User[]> {
@@ -29,7 +32,8 @@ export class UserController {
         return this.userService.getUserById(id)
     }
 
-    @Patch('/:id/update')
+    @Patch('/:id')
+    @UseGuards(AuthGuard())
     @UseInterceptors(FileInterceptor('avatar', {
         storage: diskStorage({
             destination: './image',
@@ -45,5 +49,12 @@ export class UserController {
     ): Promise<User> {
         const { gender, role } = updateUserDto;
         return this.userService.updateUser(id, gender, role, file);
+    }
+
+
+    @Delete('/:id')
+    @UseGuards(AuthGuard())
+    remove(@Param('id') id: string) {
+        return this.userService.delete(id);
     }
 }

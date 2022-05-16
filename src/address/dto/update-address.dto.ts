@@ -6,12 +6,12 @@ export class UpdateAddressDto {
     @IsOptional()
     name: string
 
-    @IsString()
+    @IsNumber()
     @IsOptional()
     @Type(() => Number)
     phone: number
-
-    @IsNumber()
+    
+    @IsString()
     @IsOptional()
     address: string
 }

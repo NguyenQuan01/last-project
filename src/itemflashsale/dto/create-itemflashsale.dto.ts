@@ -14,6 +14,7 @@ export class CreateItemflashsaleDto {
     @IsOptional()
     issale: boolean
 
-    @IsUUID()
     itemId: string;
+
+    flashsaleId: string
 }

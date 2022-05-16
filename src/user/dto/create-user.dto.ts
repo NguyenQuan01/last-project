@@ -34,8 +34,8 @@ export class CreateUserDto {
     @IsOptional()
     avatar: string
 
-    @IsBooleanString()
-    @IsOptional()
-    verify: boolean
+    // @IsBooleanString()
+    // @IsOptional()
+    // verify: boolean
 
 }

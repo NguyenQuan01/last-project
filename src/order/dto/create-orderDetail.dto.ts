@@ -5,9 +5,9 @@ export class CreateOrderDetailDto {
     @Type(() => Number)
     quantity: number
 
-    @IsNumber()
-    @Type(() => Number)
-    price: number
+    // @IsNumber()
+    // @Type(() => Number)
+    // price: number
 
     itemId: string
 

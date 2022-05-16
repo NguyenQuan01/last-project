@@ -2,7 +2,7 @@ import { Exclude } from "class-transformer";
 import { Flashsale } from "src/flashsale/entities/flashsale.entity";
 import { Item } from "src/items/entities/item.entity";
 import { OrderDetail } from "src/order/entities/orderdetail.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Itemflashsale {
@@ -19,13 +19,11 @@ export class Itemflashsale {
     issale: boolean
 
     @ManyToOne((_type) => Flashsale, (flashsale) => flashsale.itemFlashsale, { eager: false })
-    @Exclude({ toPlainOnly: true })
     flashsale: Flashsale
 
     @ManyToOne((_type) => Item, (item) => item.itemFlashsale, { eager: false })
-    @Exclude({ toPlainOnly: true })
     item: Item
 
-    @ManyToOne((_type) => OrderDetail, (orderDetail) => orderDetail.item, { eager: false })
-    orderDetail: OrderDetail
+    @OneToMany((_type) => OrderDetail, (orderDetail) => orderDetail.item, { eager: false })
+    orderDetail: OrderDetail[]
 }

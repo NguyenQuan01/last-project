@@ -7,6 +7,8 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.strategy';
 import { UserModule } from 'src/user/user.module';
+import { MailService } from 'src/mail/mail.service';
+import { MailModule } from 'src/mail/mail.module';
 
 @Module({
   imports: [
@@ -20,6 +22,7 @@ import { UserModule } from 'src/user/user.module';
 
     }),
     UserModule,
+    MailModule,
   ],
   providers: [AuthService,JwtStrategy],
   controllers: [AuthController],

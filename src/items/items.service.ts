@@ -16,12 +16,13 @@ export class ItemsService {
     private categoryRepository: CategoryRepository,
   ) { }
 
-  async create(createItemDto: CreateItemDto, file: Express.Multer.File, files: Array<Express.Multer.File>, id: string): Promise<void> {
-    const category = await this.categoryRepository.findOne({ id })
+  async create(createItemDto: CreateItemDto, file: Express.Multer.File, files: Array<Express.Multer.File>) {
+    const { categoryId, orderDetailId } = createItemDto
+    const category = await this.categoryRepository.findOne(categoryId)
     const newDate = moment().format()
     // for (let i = 0; i < files.length; i++) {
     //   const element = files[i].path;
-      
+
     // }
     const item = this.itemRepository.create({
       ...createItemDto,
@@ -31,7 +32,8 @@ export class ItemsService {
       create_at: newDate,
       category,
     })
-    await this.itemRepository.save(item)
+    const newitem =await this.itemRepository.save(item)
+    return newitem
   }
 
   async findAll(filterDto: GetItemFilterDto): Promise<Item[]> {
@@ -55,6 +57,8 @@ export class ItemsService {
   }
 
   async update(id: string, file: Express.Multer.File, updateItemDto: UpdateItemDto): Promise<Item> {
+    console.log(file);
+    
     const { name, barcode, price, weight, quantity, description, status } = updateItemDto
 
     const newDate = moment().format()
@@ -62,7 +66,7 @@ export class ItemsService {
 
     const item = await this.findOne(id)
     try {
-      if (item.avatar.length > 0) {
+      if (fs.existsSync(item.avatar)) {
         fs.unlinkSync(`./${item.avatar}`)
       }
 

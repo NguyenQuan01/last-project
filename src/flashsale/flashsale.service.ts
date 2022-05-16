@@ -27,7 +27,7 @@ export class FlashsaleService {
     const query = this.flashsaleRepository.createQueryBuilder('flashsale')
 
     if (search) {
-      query.andWhere('LOWER(flashsale.name) LIKE LOWER(:search)OR LOWER(flashsale.description) LIKE LOWER(:search)', { search: `%${search}%` })
+      query.andWhere('LOWER(flashsale.name) LIKE LOWER(:search) OR LOWER(flashsale.description) LIKE LOWER(:search)', { search: `%${search}%` })
     }
 
     const flashsale = await query.getMany()

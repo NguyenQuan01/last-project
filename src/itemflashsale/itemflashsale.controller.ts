@@ -9,9 +9,9 @@ import { GetItemFlashsaleFilterDto } from './dto/get-itemflashsale-filter.dto';
 export class ItemflashsaleController {
   constructor(private readonly itemflashsaleService: ItemflashsaleService) { }
 
-  @Post('/:id')
-  create(@Body() createItemflashsaleDto: CreateItemflashsaleDto, @Param('id') id: string): Promise<Itemflashsale> {
-    return this.itemflashsaleService.create(createItemflashsaleDto, id);
+  @Post()
+  create(@Body() createItemflashsaleDto: CreateItemflashsaleDto): Promise<Itemflashsale> {
+    return this.itemflashsaleService.create(createItemflashsaleDto);
   }
 
   @Get(':id')

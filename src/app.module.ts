@@ -11,6 +11,7 @@ import { VoucherModule } from './voucher/voucher.module';
 import { FlashsaleModule } from './flashsale/flashsale.module';
 import { ItemflashsaleModule } from './itemflashsale/itemflashsale.module';
 import { OrderModule } from './order/order.module';
+import { MailModule } from './mail/mail.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { OrderModule } from './order/order.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
         autoLoadEntities: true,
+        logging: false,
         synchronize: true,
       }),
     }),
@@ -37,8 +39,8 @@ import { OrderModule } from './order/order.module';
     //     dest: './image',
     //   }),
     // }),
-    AuthModule, 
-    UserModule, CategoryModule, ItemsModule, AddressModule, VoucherModule, FlashsaleModule, ItemflashsaleModule, OrderModule,
+    AuthModule,
+    UserModule, CategoryModule, ItemsModule, AddressModule, VoucherModule, FlashsaleModule, ItemflashsaleModule, OrderModule, MailModule,
   ],
 })
 export class AppModule { }

@@ -6,6 +6,8 @@ import { GenderStatus } from "./status/gender-status.enum";
 import { RoleStatus } from "./status/role-status.enum";
 import { ConflictException, InternalServerErrorException } from "@nestjs/common";
 import { GetUserFilterDto } from "./dto/get-user-filter.dto";
+import { v4 as uuid } from 'uuid';
+
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User>{
@@ -25,28 +27,31 @@ export class UserRepository extends Repository<User>{
     }
 
 
-    async createUser(createUserDto: CreateUserDto, file: any): Promise<void> {
-        const { password } = createUserDto
+    // async createUser(createUserDto: CreateUserDto, file: any): Promise<void> {
+    //     const { password } = createUserDto
 
-        const salt = await bcrypt.genSalt()
-        const hashedPassword = await bcrypt.hash(password, salt)
+    //     const salt = await bcrypt.genSalt()
+    //     const hashedPassword = await bcrypt.hash(password, salt)
 
-        const user = this.create({
-            ...createUserDto,
-            password: hashedPassword,
-            gender: GenderStatus.UNDEFINE,
-            role: RoleStatus.USER,
-            verify: false,
-            avatar: file.path
-        })
-        try {
-            await this.save(user)
-        } catch (error) {
-            if (error.code === '23505') {
-                throw new ConflictException('email already use')
-            } else {
-                throw new InternalServerErrorException()
-            }
-        }
-    }
+    //     const user = this.create({
+    //         ...createUserDto,
+    //         password: hashedPassword,
+    //         gender: GenderStatus.UNDEFINE,
+    //         role: RoleStatus.USER,
+    //         verifyCode: uuid(),
+    //         avatar: file.path
+    //     })
+
+    //     try {
+    //         await this.save(user)
+
+
+    //     } catch (error) {
+    //         if (error.code === '23505') {
+    //             throw new ConflictException('email already use')
+    //         } else {
+    //             throw new InternalServerErrorException()
+    //         }
+    //     }
+    // }
 }

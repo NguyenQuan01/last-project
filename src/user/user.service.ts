@@ -1,5 +1,5 @@
 import { UserRepository } from 'src/user/user.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entity/user..entity';
 import { GenderStatus } from './status/gender-status.enum';
@@ -31,7 +31,7 @@ export class UserService {
 
     async updateUser(id: string, genderStatus: GenderStatus, roleStatus: RoleStatus, file: any): Promise<User> {
         const user = await this.getUserById(id)
-        if (user.avatar) {
+        if (fs.existsSync(user.avatar)) {
             fs.unlinkSync(`./${user.avatar}`)
         }
 
@@ -41,5 +41,12 @@ export class UserService {
         await this.userRepository.save(user)
 
         return user
+    }
+
+    async delete ( id: string){
+        const user = await this.userRepository.delete(id)
+        if (user.affected === 0) {
+            throw new NotFoundException(`order with ID "${id}" not found`);
+        }
     }
 }

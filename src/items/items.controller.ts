@@ -15,7 +15,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class ItemsController {
   constructor(private readonly itemsService: ItemsService) { }
 
-  @Post('/:id')
+  @Post()
   @UseInterceptors(FileInterceptor('avatar', {
     storage: diskStorage({
       destination: './image',
@@ -28,16 +28,15 @@ export class ItemsController {
     @UploadedFile() file: Express.Multer.File,
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() createItemDto: CreateItemDto,
-    @Param('id') id: string
 
-  ): Promise<void> {
-    return this.itemsService.create(createItemDto, file, files, id);
+  ) {
+    return this.itemsService.create(createItemDto, file, files);
   }
 
   @Get()
   findAll(
     @Query() filterDto: GetItemFilterDto,
-  ): Promise<Item[]> {
+  ) {
     return this.itemsService.findAll(filterDto);
   }
 

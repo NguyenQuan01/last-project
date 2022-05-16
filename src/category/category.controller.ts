@@ -31,7 +31,6 @@ export class CategoryController {
     @Body() createCategoryDto: CreateCategoryDto,
     @UploadedFiles() file: Array<Express.Multer.File>
   ): Promise<void> {
-    // console.log(file);
     return this.categoryService.create(createCategoryDto, file);
   }
 
